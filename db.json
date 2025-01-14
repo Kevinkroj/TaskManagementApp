@@ -1,0 +1,208 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "user@user.com",
+      "password": "1"
+    },
+    {
+      "email": "1user@user.com",
+      "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+      "id": "HaAvqQn",
+      "role": "admin",
+      "username": "admin"
+    },
+    {
+      "email": "normaluser@user.com",
+      "password": "$2a$10$B6WFSWyhef6m4jpuGKA0EeRfqnyP6JOY.i8pJ.kdR9XQDyEChaMTG",
+      "id": "IAQF8yg",
+      "role": "worker",
+      "username": "worker"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Real taks",
+      "description": "Develop a React application for task management",
+      "deadline": "2025-01-20T17:00:00Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-10T09:00:00Z",
+      "status": "in-progress",
+      "finishedDate": null,
+      "userEmail": "1user@user.com",
+      "updatedAt": "2025-01-11T21:29:03.300Z"
+    },
+    {
+      "id": "2",
+      "title": "Ca flet boddi",
+      "description": "Resolve issues reported in the React app",
+      "deadline": "2025-03-15T17:00:00Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-09T10:30:00Z",
+      "status": "review",
+      "finishedDate": "2025-01-11T15:00:00Z",
+      "userEmail": "1user@user.com",
+      "updatedAt": "2025-01-11T21:47:13.639Z"
+    },
+    {
+      "id": "3",
+      "title": "Fix Bugs in App",
+      "description": "Resolve issues reported in the React app",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-09T10:30:00Z",
+      "status": "completed",
+      "finishedDate": "2024-09-11T15:00:00Z",
+      "deadline": "2025-01-15T17:00:00Z"
+    },
+    {
+      "id": "4",
+      "title": "Fix Bugs in App",
+      "description": "Resolve issues reported in the React app",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-09T10:30:00Z",
+      "status": "completed",
+      "finishedDate": "2025-01-11T15:00:00Z",
+      "deadline": "2025-01-15T17:00:00Z"
+    },
+    {
+      "id": "5",
+      "title": "Test122",
+      "description": "Test122",
+      "deadline": "2025-01-17T00:00:00.000Z",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T17:30:07.999Z",
+      "status": "pending",
+      "finishedDate": null,
+      "userEmail": "user@user.com",
+      "updatedAt": "2025-01-11T21:27:36.872Z"
+    },
+    {
+      "id": "o7bVEJm",
+      "title": "adas",
+      "description": "adsdas323",
+      "deadline": "2025-01-22T00:00:00.000Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-11T17:27:27.639Z",
+      "status": "pending",
+      "finishedDate": null,
+      "userEmail": "1user@user.com",
+      "updatedAt": "2025-01-11T21:28:55.235Z"
+    },
+    {
+      "title": "Test",
+      "description": "Test",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T17:30:07.999Z",
+      "status": "pending",
+      "finishedDate": null,
+      "deadline": "2025-01-17T00:00:00.000Z",
+      "id": "z9g4mkr"
+    },
+    {
+      "title": "Test",
+      "description": "te behet shpejt",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-11T21:30:01.752Z",
+      "status": "pending",
+      "finishedDate": null,
+      "deadline": "2025-01-31T00:00:00.000Z",
+      "id": "ZOqRoEY"
+    },
+    {
+      "title": "3223232323",
+      "description": "2323232323",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-11T21:30:27.448Z",
+      "status": "pending",
+      "finishedDate": null,
+      "deadline": "2025-01-16T00:00:00.000Z",
+      "id": "SHMMokD"
+    },
+    {
+      "id": "BEAEqgw",
+      "title": "121",
+      "description": "1212",
+      "deadline": "2025-01-21T00:00:00.000Z",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T21:31:17.663Z",
+      "status": "in progress",
+      "finishedDate": null,
+      "updatedAt": "2025-01-12T23:17:24.272Z"
+    },
+    {
+      "id": "U7l6SPr",
+      "title": "1212",
+      "description": "121212",
+      "deadline": "2025-01-16T00:00:00.000Z",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T21:32:59.544Z",
+      "status": "inReview",
+      "finishedDate": null,
+      "updatedAt": "2025-01-12T23:18:01.250Z"
+    },
+    {
+      "id": "51WUi6N",
+      "title": "emo",
+      "description": "43",
+      "deadline": "2025-01-23T00:00:00.000Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-11T21:35:17.870Z",
+      "status": "inReview",
+      "finishedDate": null,
+      "updatedAt": "2025-01-12T23:17:58.780Z"
+    },
+    {
+      "id": "9snUcHo",
+      "title": "1",
+      "description": "1",
+      "deadline": "2025-01-30T00:00:00.000Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-11T21:36:23.420Z",
+      "status": "in progress",
+      "finishedDate": null,
+      "userEmail": "1user@user.com",
+      "priority": "Low",
+      "updatedAt": "2025-01-12T23:17:44.138Z"
+    },
+    {
+      "title": "priority",
+      "description": "priority",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T22:12:10.527Z",
+      "status": "pending",
+      "finishedDate": null,
+      "deadline": "2025-01-24T00:00:00.000Z",
+      "id": "koN9BaS"
+    },
+    {
+      "title": "1",
+      "description": "1",
+      "assignedTo": "1",
+      "assignedDate": "2025-01-11T22:14:14.940Z",
+      "status": "pending",
+      "finishedDate": null,
+      "deadline": "2025-01-10T00:00:00.000Z",
+      "priority": "Medium",
+      "id": "BV4C8Qd"
+    },
+    {
+      "id": "ORobRtu",
+      "title": "tasku i dyte",
+      "description": "da",
+      "deadline": "2025-01-16T00:00:00.000Z",
+      "assignedTo": "IAQF8yg",
+      "assignedDate": "2025-01-12T10:26:39.590Z",
+      "status": "completed",
+      "finishedDate": null,
+      "userEmail": "normaluser@user.com",
+      "priority": "Low",
+      "comment": "Ky eshte taks i veshtire , tani po nis t punoj, e mbarova tagun\n\n@1user@user.com",
+      "mentions": [
+        "1user",
+        "user"
+      ],
+      "updatedAt": "2025-01-12T11:48:34.321Z"
+    }
+  ]
+}

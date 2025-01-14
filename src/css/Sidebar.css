@@ -1,0 +1,108 @@
+/* General layout for sidebar and content */
+.sidebar-layout {
+  display: flex;
+  height: 100%;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 350px;
+  background-color: #436fce;
+  color: white;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 35px;
+}
+
+/* Welcome section */
+.sidebar .welcome {
+  margin-bottom: 2rem;
+}
+
+.sidebar .welcome h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-family: "Krona One";
+  font-weight: 400;
+}
+
+.sidebar .welcome p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Navigation menu */
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-icon {
+  width: 20px; /* Adjust icon size */
+  height: 20px;
+  margin-right: 10px; /* Add spacing between icon and text */
+  vertical-align: middle;
+}
+
+.sidebar nav ul li {
+  margin: 1rem 0;
+  font-family: "Krona One";
+}
+
+.sidebar nav ul li a {
+  text-decoration: none;
+  color: #ecf0f1;
+  font-size: 1rem;
+  padding: 0.5rem; /* Adjust padding for better spacing */
+  display: flex; /* Use flex to align icon and text properly */
+  align-items: center; /* Vertically align text with the icon */
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-bottom: 30px;
+}
+
+.sidebar nav ul li a:hover {
+  background-color: #34495e;
+}
+
+.sign-out-button {
+  margin-top: auto; /* Ensure it stays at the bottom */
+  color: red; /* Red text color */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none; /* No border */
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent; /* No background */
+  transition: color 0.3s; /* Transition for text color change */
+}
+
+.sign-out-button:hover {
+  color: darkred; /* Darker red color on hover */
+}
+
+/* Content area */
+.content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: #ecf0f1;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    display: none;
+  }
+  .content {
+    padding: 1rem;
+  }
+}

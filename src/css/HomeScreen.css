@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Krona+One&display=swap");
+
+.dashboard-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px; /* Adjust as needed */
+}
+
+.card-title {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+}
+
+.card-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
+}
+
+.content-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.text-section {
+  flex: 1;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-section {
+  flex: 2;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.main-list,
+.side-list {
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.main-list {
+  flex: 2;
+}
+
+.side-list {
+  flex: 1;
+}
+
+.list-item {
+  display: flex; /* Enables flexbox layout */
+  justify-content: space-between; /* Distribute items evenly with space between them */
+  align-items: center; /* Vertically center items */
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+.item-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.item-details {
+  display: flex; /* Flexbox layout for the details */
+  flex-direction: row; /* Row direction (default) */
+  gap: 15px; /* Space between items */
+  font-size: 14px;
+  color: #666;
+}
+
+.item-details span {
+  display: block; /* Make each span a block-level element */
+}
+
+.item-details span:first-child {
+  font-weight: bold;
+}
