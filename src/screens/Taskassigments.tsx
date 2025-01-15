@@ -36,6 +36,7 @@ function TaskScreen() {
     const [filteredUsers, setFilteredUsers] = useState<any>([]);
     const [activeIndex, setActiveIndex] = useState(-1);
     const [openAddTask, setOpenAddTask] = useState<Boolean>(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
 
     const handleKeyDown = (e: any) => {
@@ -132,20 +133,22 @@ function TaskScreen() {
     };
 
 
-    const handleSaveClick = async () => {
-        console.log('Saving task:', editedTask);
+    const handleSaveClick = async (taskData: any) => {
+        console.log('Saving task:', taskData);
 
         const updatedData = {
-            ...editedTask,
-            updatedAt: new Date().toISOString()
+            ...taskData,
+            updatedAt: new Date().toISOString(),
         };
+
+        console.log(updatedData);
 
         setIsPopupOpen(false);
         try {
             const response = await axios.put(`http://localhost:5001/tasks/${updatedData.id}`, updatedData);
-            console.log('Task added:', response.data);
+            console.log('Task updated:', response.data);
         } catch (error) {
-            console.error('Failed to add task:', error);
+            console.error('Failed to update task:', error);
         }
 
         setTasks((prevTasks) => {
@@ -227,6 +230,8 @@ function TaskScreen() {
 
     const handleUserSelect = (user: any) => {
         setSelectedUser(user);
+        console.log(user);
+        
         setDropdownVisible(false); // Hide dropdown after selecting a user
     };
 
@@ -246,7 +251,8 @@ function TaskScreen() {
             status: "pending", // Default status (adjust as needed)
             finishedDate: null, // Set as null since the task is not completed yet
             deadline: deadlineDateTime, // Selected due date
-            priority: priority
+            priority: priority,
+            userEmail: selectedUser.email,
         };
 
         try {
@@ -261,6 +267,8 @@ function TaskScreen() {
 
         console.log('New Task:', newTask); // Replace this with actual task submission logic
     };
+
+
 
 
     const handleDeleteTask = async (taskId: any) => {
@@ -289,52 +297,56 @@ function TaskScreen() {
     };
 
     const handleDragEnd = (result: any) => {
-        const { destination, source } = result;
-
-        if (!destination) return;  // If there is no destination, we do nothing
-
-        const { droppableId: destinationStatus } = destination;
-        const { droppableId: sourceStatus } = source;
-
-        // Check if the task was moved within the same status group
-        if (destinationStatus === sourceStatus && destination.index === source.index) return;
-
-        const updatedTasks: any = [...tasks]; // Create a shallow copy of the tasks
-
-        // Find the dragged task
-        const [draggedTask] = updatedTasks.splice(source.index, 1); // Remove the dragged task
-
-        // Update the dragged task's status to the new status
-        draggedTask.status = destinationStatus;
-
-        // Insert the dragged task into its new position
-        updatedTasks.splice(destination.index, 0, draggedTask);
-
-        // Only update the specific task in the database if needed
-        console.log('kush esht kjo', draggedTask);
-
-        console.log('Updated tasks:', updatedTasks);
-        setTasks(updatedTasks);  // Update the local task list in state
-
-        setEditedTask({
-            id: draggedTask.id,
-            title: draggedTask.title,
-            description: draggedTask.description,
-            deadline: draggedTask.deadline,
-            assignedTo: draggedTask.assignedTo,
-            assignedDate: draggedTask.assignedDate,
-            status: draggedTask.status,
-            finishedDate: draggedTask.finishedDate,
-            userEmail: draggedTask.userEmail,
-            priority: draggedTask.priority,
-            comment: draggedTask.comment,
-            mentions: draggedTask.mentions
+        const { destination, source, draggableId } = result;
+    
+        if (!destination) return; // Exit if dropped outside a droppable
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return; // Exit if dropped in the same place
+    
+        const now = new Date().toISOString();  // Get the current date and time
+    
+        const updatedTasks = tasks.map((task: any) => {
+            if (task.id === draggableId) {
+                return {
+                    ...task,
+                    status: destination.droppableId,
+                    finishedDate: destination.droppableId === 'Completed' ? now : task.finishedDate,
+                };
+            }
+            return task;
         });
-
-
-        // Optionally save the updated task to the server
-        handleSaveClick();
+    
+        setTasks(updatedTasks); // Update state with modified tasks
+    
+        const newEditedTask = {
+            ...tasks.find((task: any) => task.id === draggableId),
+            status: destination.droppableId,
+            finishedDate: destination.droppableId === 'Completed' ? now : tasks.find((task: any) => task.id === draggableId)?.finishedDate,
+        };
+    
+        setEditedTask(newEditedTask);  // Update editedTask state
+        handleSaveClick(newEditedTask);  // Pass newEditedTask directly to handleSaveClick
     };
+    
+    
+
+
+
+    const handleSearchChange = (e: any) => {
+        if (e) {
+            setSearchQuery(e.target.value.toLowerCase());
+        }
+    };
+
+    const filteredTasks = tasks.filter((task) => {
+        const searchLower = searchQuery.toLowerCase();
+
+        return (
+            (task.id && task.id.toString().includes(searchLower)) || // Check for id
+            (task.userEmail && task.userEmail.toLowerCase().includes(searchLower)) || // Check for assignedTo
+            (task.date && new Date(task.date).toLocaleDateString().includes(searchLower)) || // Check for date
+            (task.title && task.title.toLowerCase().includes(searchLower)) // Check for name
+        );
+    });
 
 
     const renderTaskItem = (item: any) => (
@@ -374,11 +386,12 @@ function TaskScreen() {
 
 
     return (
-        <div>
+        <div className='all-div'>
             <div className='top-div'>
                 <div className='search'>
                     <img src={lupeIMG} alt="Home Icon" className="link-icon" />
-                    <input className='search-input' type="text" placeholder="Search..." />
+                    <input value={searchQuery}
+                        onChange={handleSearchChange} className='search-input' type="text" placeholder="Search..." />
                 </div>
 
 
@@ -446,14 +459,55 @@ function TaskScreen() {
                     <div className="popup-content">
                         <h2>Pop-Up Title</h2>
                         <p>This is a pop-up message.</p>
+                        <div className="task-form">
+                            <p>{selectedUser?.email}</p>
+                            <ul>
+                                {users.map((user: any) => (
+                                    <li key={user.id} onClick={() => handleUserSelect(user)}>
+                                        {user.email}
+                                    </li>
+                                ))}
+                            </ul>
+                            <input
+                                type="text"
+                                placeholder="Task Title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                            <textarea
+                                placeholder="Task Description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+                            <input
+                                type="date"
+                                value={dueDate}
+                                onChange={(e) => setDueDate(e.target.value)}
+                            />
+
+                            <label>
+                                Priority:
+                                <select
+                                    value={editedTask.priority}
+                                    onChange={(e) => setPriority(e.target.value)}
+                                >
+                                    <option value="">Select priority</option>
+                                    <option value="Important">Important</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </label>
+                            <button onClick={handleAddTask}>Done</button>
+
+                        </div>
                         <button onClick={() => { setOpenAddTask(false) }}>Close</button>
                     </div>
                 </div>
             )}
 
             <DragDropContext onDragEnd={handleDragEnd}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', }}>
-                    {['pending', 'inProgress', 'inReview', 'completed'].map((status) => (
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {['pending', 'In Progress', 'In Review', 'Completed'].map((status) => (
                         <Droppable droppableId={status} key={status}>
                             {(provided) => (
                                 <div
@@ -463,10 +517,10 @@ function TaskScreen() {
                                 >
                                     <h2>{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
                                     <ul>
-                                        {tasks
+                                        {filteredTasks
                                             .filter((task) => task.status === status)
                                             .map((item, index) => (
-                                                <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
+                                                <Draggable key={item.id} draggableId={item.id} index={index}>
                                                     {(provided) => (
                                                         <li
                                                             ref={provided.innerRef}
@@ -488,7 +542,6 @@ function TaskScreen() {
                 </div>
             </DragDropContext>
 
-
             {isPopupOpen && (
                 <div className="popup">
                     <div className="popup-content">
@@ -500,7 +553,7 @@ function TaskScreen() {
                                 onChange={(e) => handleInputChange('status', e.target.value)}
                             >
                                 <option value="in-progress">In Progress</option>
-                                <option value="review">Review</option>
+                                <option value="review">In Review</option>
                                 <option value="completed">Completed</option>
                             </select>
                         </label>
@@ -591,7 +644,7 @@ function TaskScreen() {
                             </>
                         )}
                         <div className="popup-actions">
-                            <button onClick={handleSaveClick}>Save</button>
+                            <button onClick={() => { handleSaveClick(editedTask) }}>Save</button>
                             <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
                         </div>
                     </div>

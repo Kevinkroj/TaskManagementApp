@@ -17,18 +17,18 @@
 }
 
 /* Welcome section */
-.sidebar .welcome {
+.sidebar .welcome1 {
   margin-bottom: 2rem;
 }
 
-.sidebar .welcome h2 {
+.sidebar .welcome1 h2 {
   margin: 0;
   font-size: 1.1rem;
   font-family: "Krona One";
   font-weight: 400;
 }
 
-.sidebar .welcome p {
+.sidebar .welcome1 p {
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }

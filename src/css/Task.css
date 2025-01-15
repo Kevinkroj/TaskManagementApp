@@ -9,6 +9,14 @@
   list-style: none;
   padding: 0;
 }
+
+.all-div{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
 .dropdown li {
   padding: 5px;
   cursor: pointer;

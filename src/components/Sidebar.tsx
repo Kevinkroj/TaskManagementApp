@@ -21,7 +21,7 @@ const SidebarLayout = ({ children }: any) => {
     return (
         <div className="sidebar-layout">
             <div className="sidebar">
-                <div className="welcome">
+                <div className="welcome1">
                     <h2>Welcome , User!</h2>
                 </div>
                 <nav>

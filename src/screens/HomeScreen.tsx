@@ -184,9 +184,9 @@ function HomeScreen() {
                 }
                 const data = response.data;
 
-                const completedTasks = data.filter((task: any) => task.status === 'completed');
-                setTotalTaskInProgress(data.filter((task: any) => task.status === 'in-progress').length);
-                setTotalTaskReview(data.filter((task: any) => task.status === 'review').length);
+                const completedTasks = data.filter((task: any) => task.status === 'Completed');
+                setTotalTaskInProgress(data.filter((task: any) => task.status === 'In Progress').length);
+                setTotalTaskReview(data.filter((task: any) => task.status === 'In Review').length);
                 setTotalTaskCompleted(completedTasks.length);
                 setTotalTask(data.length);
                 const sortedData = data.sort((a: any, b: any) => {
