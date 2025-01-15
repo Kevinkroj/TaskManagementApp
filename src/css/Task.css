@@ -23,14 +23,143 @@
   align-items: center;
   margin-bottom: 10px;
   padding: 20px;
+  background-color: rgba(193, 193, 193, 0.5);
+  border-radius: 20px;
+  width: 70%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(67, 111, 206, 0.6);
+}
+
+h2 {
+  font-family: "Krona One";
+  font-weight: 400;
+  color: #436fce;
+}
+
+.edit-icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+}
+
+.column-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+  color: white;
+  margin-top: 5px;
+}
+
+.edit-text {
+  font-family: "Krona One";
+  font-size: 13px;
+}
+
+.delete-text {
+  font-family: "Krona One";
+  font-size: 13px;
+  color: white;
+}
+
+.assign-container {
+  display: flex;
+  align-items: center;
+}
+
+.top-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-input {
+  padding: 20px;
+  padding-left: 0%;
+  border-radius: 20px;
+  background-color: #c1c1c1;
+  border: none; /* Removes the border */
+  outline: none;
+  font-family: "Krona One";
+
+  width: 100%;
+}
+
+.isearch-input:focus {
+  outline: none; /* Ensures no outline appears when the field is focused */
+}
+
+.search {
+  background-color: #c1c1c1;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+  width: 30%;
+  display: flex;
+  align-items: center;
+}
+
+.search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px; /* Adjust font size */
+  font-family: "Krona One"; /* Make it italic (optional) */
+}
+
+.delete-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  background-color: rgba(209, 92, 92, 0.6);
+  border-radius: 15px;
+  margin-left: 5px;
+  padding: 4px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* Pop-up content styling */
+.popup-content {
   background-color: white;
-  border-radius: 5px;
-  width: 20%;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.add-button {
+  margin-left: auto;
+  font-family: "Krona One";
+  color: #7e7d7d;
+  font-size: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .item-title {
-  font-weight: bold;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 12px;
+  font-family: "Krona One";
+}
+.assign-text {
+  font-family: "Krona One";
+  font-size: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #787878;
 }
 
 .item-details {

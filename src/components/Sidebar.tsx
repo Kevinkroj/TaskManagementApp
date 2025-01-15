@@ -1,5 +1,7 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { signOut } from '../actions/authActions';
 import '../css/Sidebar.css';
 import homeImage from '../images/image3.png';
 import taskImage from '../images/image4.png';
@@ -8,6 +10,14 @@ import settingImage from '../images/image6.png';
 
 
 const SidebarLayout = ({ children }: any) => {
+    const dispatch = useDispatch();
+
+    const handleSignOut = () => {
+        dispatch(signOut());
+        localStorage.removeItem('userToken');
+    };
+
+
     return (
         <div className="sidebar-layout">
             <div className="sidebar">
@@ -42,7 +52,7 @@ const SidebarLayout = ({ children }: any) => {
                         </li>
                     </ul>
                 </nav>
-                <button className="sign-out-button">Sign Out</button>
+                <button onClick={handleSignOut} className="sign-out-button">Sign Out</button>
             </div>
             <div className="content">
                 {children}

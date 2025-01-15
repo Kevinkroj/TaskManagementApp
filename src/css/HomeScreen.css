@@ -19,69 +19,80 @@
   gap: 15px;
 }
 
+.link-icon {
+  height: 40px;
+  width: 40px;
+}
+
 .card {
-  background: #ffffff;
+  background: rgba(193, 193, 193, 0.5);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 35px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+}
+
+.card-inside {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  height: 150px; /* Adjust as needed */
 }
 
 .card-title {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 13px;
   color: #222;
+  font-family: "Krona One";
 }
 
 .card-number {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 500;
   color: #222;
-  text-align: center;
+  font-family: "Krona One";
+  margin-left: auto;
 }
 
 .content-section {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: space-between;
 }
 
 .text-section {
-  flex: 1;
-  background: #ffffff;
+  background: rgba(193, 193, 193, 0.5);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1; /* Allow both sections to grow */
+  min-width: 300px; /* Prevent the section from getting too small */
 }
 
 .chart-section {
-  flex: 2;
-  background: #ffffff;
+  background: rgba(193, 193, 193, 0.5);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 2; /* Allow both sections to grow */
+  min-width: 300px; /* Prevent the section from getting too small */
 }
 
-.list-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.title-dash {
+  color: #222;
+  font-size: 22px;
+  text-shadow: #666;
+}
+
+.main-list p {
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .main-list,
 .side-list {
-  background: #fafafa;
+  background: rgba(193, 193, 193, 0.5);
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .main-list {
@@ -92,32 +103,153 @@
   flex: 1;
 }
 
-.list-item {
-  display: flex; /* Enables flexbox layout */
-  justify-content: space-between; /* Distribute items evenly with space between them */
-  align-items: center; /* Vertically center items */
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
-}
-
-.item-title {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.item-details {
-  display: flex; /* Flexbox layout for the details */
-  flex-direction: row; /* Row direction (default) */
-  gap: 15px; /* Space between items */
-  font-size: 14px;
-  color: #666;
-}
-
 .item-details span {
   display: block; /* Make each span a block-level element */
 }
 
 .item-details span:first-child {
   font-weight: bold;
+}
+
+.list-section {
+  display: flex; /* Enable flexbox layout for side-by-side display */
+  gap: 20px; /* Adds space between the two lists */
+}
+
+.main-list {
+  display: block; /* Or flex/grid depending on your needs */
+}
+
+.side-list {
+  flex: 1; /* Makes both lists take up equal space */
+}
+
+.header-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Create 4 equal columns */
+  text-align: center; /* Center align the text */
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid #436fce;
+  color: #436fce;
+  font-family: "Krona One";
+}
+
+.header-item {
+  padding: 0 10px;
+}
+
+.user-score {
+  font-size: 16px;
+  color: #222;
+  font-family: "Krona One";
+}
+
+p {
+  font-size: 24px;
+  color: #436fce;
+  font-family: "Krona One";
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.list-item-home {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #c1c1c1;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.item-title-home {
+  color: #436fce;
+}
+
+.item-title-home,
+.item-assigned,
+.item-finished,
+.item-status {
+  padding: 0 10px;
+  font-family: "Krona One";
+  font-size: 15px;
+}
+
+.side-list ul {
+  padding-left: 0;
+}
+
+.side-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .content-section {
+    flex-direction: column;
+  }
+
+  .text-section {
+    flex: 1; /* Keep it flexible but equal size */
+  }
+  .chart-section {
+    flex: 2; /* Give more space to the chart */
+  }
+  .list-section {
+    flex-direction: column;
+  }
+
+  .main-list,
+  .side-list {
+    flex: 1;
+    margin-bottom: 20px;
+  }
+
+  .header-row {
+    grid-template-columns: 1fr;
+    text-align: left;
+    padding: 0;
+  }
+
+  .list-item {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Adjust to 2 columns on smaller screens */
+  }
+  .item-title-home,
+  .item-assigned,
+  .item-finished,
+  .item-status {
+    padding: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    flex-direction: column; /* Stack elements vertically */
+  }
+  .text-section,
+  .chart-section {
+    flex: 1 0 100%; /* Allow each to take full width on small screens */
+  }
 }

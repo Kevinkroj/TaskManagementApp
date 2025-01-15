@@ -5,6 +5,12 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/Task.css';
+import editIMG from '../images/image11.png';
+import deleteIMG from '../images/image12.png';
+import lupeIMG from '../images/image13.png';
+
+
+
 
 
 function TaskScreen() {
@@ -29,6 +35,8 @@ function TaskScreen() {
     const [mentionDropdownVisible, setMentionDropdownVisible] = useState(false);
     const [filteredUsers, setFilteredUsers] = useState<any>([]);
     const [activeIndex, setActiveIndex] = useState(-1);
+    const [openAddTask, setOpenAddTask] = useState<Boolean>(false);
+
 
     const handleKeyDown = (e: any) => {
         if (!mentionDropdownVisible) return;
@@ -211,9 +219,10 @@ function TaskScreen() {
     }, [users, tasks]);
 
 
-
     const handleButtonClick = () => {
-        setDropdownVisible((prev) => !prev);
+        // setDropdownVisible((prev) => !prev);
+        setOpenAddTask(true)
+
     };
 
     const handleUserSelect = (user: any) => {
@@ -329,95 +338,121 @@ function TaskScreen() {
 
 
     const renderTaskItem = (item: any) => (
-        <>
-            <div className="item-title">{item.title}</div>
+        <div className='conatiner-task'>
+            <div className="item-title">#{item.id} - {item.title}</div>
+
+
+            <div className='assign-text'>Assigned to {item.userEmail}</div>
+
             {/* <div className="item-details">
                 <span>Assigned Date: {item.assignedDate}</span>
                 <span>Finished Date: {item.finishedDate}</span>
                 <span>User Assigned: {item.userEmail}</span>
                 <span>Status: {item.status}</span>
             </div> */}
-            {item.image && (
+            {/* {item.image && (
                 <img src={item.image} alt="Task Image" style={{ width: '100px', height: '100px' }} />
-            )}
+            )} */}
             <div>
                 {(userID === item.assignedTo || userRole === 'admin') && (
-                    <>
-                        <button onClick={() => handleTaskClick(item)}>Edit</button>
-                        <button onClick={() => handleDeleteTask(item.id)}>Delete</button>
-                    </>
+                    <div className='assign-container'>
+                        <div className='assign-container'>
+                            <img src={editIMG} alt="edit icone" className="edit-icon" />
+                            <div className='edit-text' onClick={() => handleTaskClick(item)}>Edit</div>
+                        </div>
+                        <div className='delete-container'>
+                            <img src={deleteIMG} alt="delete icone" className="delete-icon" />
+                            <div className='delete-text' onClick={() => handleDeleteTask(item.id)}>Delete</div>
+                        </div>
+                    </div>
                 )}
             </div>
 
-        </>
+        </div >
     );
 
 
 
     return (
         <div>
-            {userRole === 'admin' && (
-                <>
-                    <button onClick={handleButtonClick}>Add Task</button>
-                    {dropdownVisible && (
-                        <div className="dropdown">
-                            {loading ? (
-                                <p>Loading users...</p>
-                            ) : error ? (
-                                <p>{error}</p>
-                            ) : (
-                                <ul>
-                                    {users.map((user: any) => (
-                                        <li key={user.id} onClick={() => handleUserSelect(user)}>
-                                            {user.email}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    )}
-                </>
-            )}
+            <div className='top-div'>
+                <div className='search'>
+                    <img src={lupeIMG} alt="Home Icon" className="link-icon" />
+                    <input className='search-input' type="text" placeholder="Search..." />
+                </div>
 
-            {selectedUser && (
-                <div className="task-form">
-                    <p>Adding task for: {selectedUser.email}</p>
-                    <input
-                        type="text"
-                        placeholder="Task Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <textarea
-                        placeholder="Task Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                    <input
-                        type="date"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                    />
 
-                    <label>
-                        Priority:
-                        <select
-                            value={editedTask.priority}
-                            onChange={(e) => setPriority(e.target.value)}
-                        >
-                            <option value="">Select priority</option>
-                            <option value="Important">Important</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </label>
-                    <button onClick={handleAddTask}>Done</button>
+                {userRole === 'admin' && (
+                    <>
+                        <div className='add-button' onClick={handleButtonClick}>+ New Task</div>
+                        {dropdownVisible && (
+                            <div className="dropdown">
+                                {loading ? (
+                                    <p>Loading users...</p>
+                                ) : error ? (
+                                    <p>{error}</p>
+                                ) : (
+                                    <ul>
+                                        {users.map((user: any) => (
+                                            <li key={user.id} onClick={() => handleUserSelect(user)}>
+                                                {user.email}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
 
+            {openAddTask && (
+                // <div className="task-form">
+                //     <p>A {selectedUser.email}</p>
+                //     <input
+                //         type="text"
+                //         placeholder="Task Title"
+                //         value={title}
+                //         onChange={(e) => setTitle(e.target.value)}
+                //     />
+                //     <textarea
+                //         placeholder="Task Description"
+                //         value={description}
+                //         onChange={(e) => setDescription(e.target.value)}
+                //     />
+                //     <input
+                //         type="date"
+                //         value={dueDate}
+                //         onChange={(e) => setDueDate(e.target.value)}
+                //     />
+
+                //     <label>
+                //         Priority:
+                //         <select
+                //             value={editedTask.priority}
+                //             onChange={(e) => setPriority(e.target.value)}
+                //         >
+                //             <option value="">Select priority</option>
+                //             <option value="Important">Important</option>
+                //             <option value="Medium">Medium</option>
+                //             <option value="Low">Low</option>
+                //         </select>
+                //     </label>
+                //     <button onClick={handleAddTask}>Done</button>
+
+                // </div>
+
+                <div className="popup">
+                    <div className="popup-content">
+                        <h2>Pop-Up Title</h2>
+                        <p>This is a pop-up message.</p>
+                        <button onClick={() => { setOpenAddTask(false) }}>Close</button>
+                    </div>
                 </div>
             )}
 
             <DragDropContext onDragEnd={handleDragEnd}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', }}>
                     {['pending', 'inProgress', 'inReview', 'completed'].map((status) => (
                         <Droppable droppableId={status} key={status}>
                             {(provided) => (

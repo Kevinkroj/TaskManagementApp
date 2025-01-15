@@ -135,11 +135,11 @@
       "title": "1212",
       "description": "121212",
       "deadline": "2025-01-16T00:00:00.000Z",
-      "assignedTo": "1",
+      "assignedTo": "HaAvqQn",
       "assignedDate": "2025-01-11T21:32:59.544Z",
       "status": "inReview",
       "finishedDate": null,
-      "updatedAt": "2025-01-12T23:18:01.250Z"
+      "updatedAt": "2025-01-15T01:09:41.538Z"
     },
     {
       "id": "51WUi6N",
@@ -150,7 +150,7 @@
       "assignedDate": "2025-01-11T21:35:17.870Z",
       "status": "inReview",
       "finishedDate": null,
-      "updatedAt": "2025-01-12T23:17:58.780Z"
+      "updatedAt": "2025-01-15T01:13:04.236Z"
     },
     {
       "id": "9snUcHo",
@@ -159,32 +159,34 @@
       "deadline": "2025-01-30T00:00:00.000Z",
       "assignedTo": "HaAvqQn",
       "assignedDate": "2025-01-11T21:36:23.420Z",
-      "status": "in progress",
+      "status": "inProgress",
       "finishedDate": null,
       "userEmail": "1user@user.com",
       "priority": "Low",
-      "updatedAt": "2025-01-12T23:17:44.138Z"
+      "updatedAt": "2025-01-15T01:13:00.389Z"
     },
     {
+      "id": "koN9BaS",
       "title": "priority",
       "description": "priority",
+      "deadline": "2025-01-24T00:00:00.000Z",
       "assignedTo": "1",
       "assignedDate": "2025-01-11T22:12:10.527Z",
-      "status": "pending",
+      "status": "inReview",
       "finishedDate": null,
-      "deadline": "2025-01-24T00:00:00.000Z",
-      "id": "koN9BaS"
+      "updatedAt": "2025-01-15T01:13:07.901Z"
     },
     {
+      "id": "BV4C8Qd",
       "title": "1",
       "description": "1",
+      "deadline": "2025-01-10T00:00:00.000Z",
       "assignedTo": "1",
       "assignedDate": "2025-01-11T22:14:14.940Z",
-      "status": "pending",
+      "status": "inProgress",
       "finishedDate": null,
-      "deadline": "2025-01-10T00:00:00.000Z",
       "priority": "Medium",
-      "id": "BV4C8Qd"
+      "updatedAt": "2025-01-15T01:12:57.889Z"
     },
     {
       "id": "ORobRtu",
@@ -193,7 +195,7 @@
       "deadline": "2025-01-16T00:00:00.000Z",
       "assignedTo": "IAQF8yg",
       "assignedDate": "2025-01-12T10:26:39.590Z",
-      "status": "completed",
+      "status": "inProgress",
       "finishedDate": null,
       "userEmail": "normaluser@user.com",
       "priority": "Low",
@@ -202,7 +204,7 @@
         "1user",
         "user"
       ],
-      "updatedAt": "2025-01-12T11:48:34.321Z"
+      "updatedAt": "2025-01-15T01:12:40.464Z"
     }
   ]
 }

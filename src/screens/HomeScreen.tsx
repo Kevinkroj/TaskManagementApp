@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Doughnut, Line } from 'react-chartjs-2';
-import { useDispatch } from 'react-redux';
-import { signOut } from '../actions/authActions';
 import '../css/HomeScreen.css';
+import totalIMG from '../images/image7.png';
+import progressIMG from '../images/image8.png';
+import reviewIMG from '../images/image9.png';
+import completedIMG from '../images/image10.png';
+
+
+
+
 
 import {
     Chart as ChartJS,
@@ -14,6 +20,7 @@ import {
     Tooltip,
     Legend,
     ArcElement,
+    ChartOptions,
 } from 'chart.js';
 import axios from 'axios';
 
@@ -30,7 +37,6 @@ ChartJS.register(
 
 
 function HomeScreen() {
-    const dispatch = useDispatch();
     const [totalTask, setTotalTask] = useState(0);
     const [totalTaskInProgress, setTotalTaskInProgress] = useState(0);
     const [totalTaskReview, setTotalTaskReview] = useState(0);
@@ -58,25 +64,81 @@ function HomeScreen() {
         },
         plugins: {
             legend: {
-                position: 'top' as const,
+                position: 'bottom' as const,
+                labels: {
+                    usePointStyle: true,
+                    font: {
+                        size: 10,
+                        family: 'Krona One',
+                    },
+                    padding: 10
+                },
             },
             title: {
                 display: true,
                 text: 'Tasks Completed',
                 color: 'black',
-                font: { wieght: 'bold', size: 22 },
+                font: { wieght: 'bold', size: 22, family: 'Krona One' },
             },
         },
         scales: {
             x: {
                 title: {
                     display: true,
-                    text: 'Time Period',
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0)', // Set grid lines to white
+                },
+                ticks: {
+                    color: 'black', // Set tick marks to white
+                },
+                border: {
+                    color: 'black', // Set X axis line to white
                 },
             },
             y: {
                 suggestedMax: Math.max(...completedTasksByMonth) + 2,
                 beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0)', // Set grid lines to white
+                },
+                ticks: {
+                    color: 'black', // Set tick marks to white
+                },
+                border: {
+                    color: 'black', // Set Y axis line to white
+                },
+            },
+        },
+
+    };
+
+    const optionsDounought: ChartOptions<'doughnut'> = {
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    usePointStyle: true,
+                    font: {
+                        size: 10,
+                        family: 'Krona One',
+                    },
+                    padding: 10
+                },
+
+            },
+            title: {
+                display: true,
+                text: 'Current tasks',
+                color: 'black',
+                font: {
+                    size: 22,
+                    family: 'Krona One',
+                },
+                padding: {
+                    top: 30,
+                    bottom: 10,
+                },
             },
         },
     };
@@ -98,8 +160,8 @@ function HomeScreen() {
             {
                 label: 'Completed Tasks',
                 data: completedTasksByMonth,
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: '#436fce',
+                backgroundColor: '436fce)',
             },
         ],
     };
@@ -240,10 +302,15 @@ function HomeScreen() {
         }
     };
 
-    const handleSignOut = () => {
-        dispatch(signOut());
-        localStorage.removeItem('userToken');
-    };
+    function formatDate(dateString: Date) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const year = date.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    }
+
 
     const AnimatedNumber = ({ targetNumber }: any) => {
         const [count, setCount] = useState(0);
@@ -280,32 +347,43 @@ function HomeScreen() {
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
-                <h1>Welcome to the Dashboard { }</h1>
-                <button onClick={handleSignOut}>Sign out</button>
+                <h1 className='title-dash'>Welcome to the Dashboard</h1>
             </div>
 
             <div className="card-container">
                 <div className="card">
-                    <div className="card-title">Total Tasks</div>
-                    <AnimatedNumber targetNumber={totalTask} />
+                    <img src={totalIMG} alt="Home Icon" className="link-icon" />
+                    <div className='card-inside'>
+                        <div className="card-title">Total Tasks</div>
+                        <AnimatedNumber targetNumber={totalTask} />
+                    </div>
                 </div>
                 <div className="card">
-                    <div className="card-title">Tasks In Progress</div>
-                    <AnimatedNumber targetNumber={totalTaskInProgress} />
+                    <img src={progressIMG} alt="Home Icon" className="link-icon" />
+                    <div className='card-inside'>
+                        <div className="card-title">In progress</div>
+                        <AnimatedNumber targetNumber={totalTaskInProgress} />
+                    </div>
                 </div>
                 <div className="card">
-                    <div className="card-title">Tasks Under Review</div>
-                    <AnimatedNumber targetNumber={totalTaskReview} />
+                    <img src={reviewIMG} alt="Home Icon" className="link-icon" />
+                    <div className='card-inside'>
+                        <div className="card-title">Under review</div>
+                        <AnimatedNumber targetNumber={totalTaskReview} />
+                    </div>
                 </div>
                 <div className="card">
-                    <div className="card-title">Completed Tasks</div>
-                    <AnimatedNumber targetNumber={totalTaskCompleted} />
+                    <img src={completedIMG} alt="Home Icon" className="link-icon" />
+                    <div className='card-inside'>
+                        <div className="card-title">Completed</div>
+                        <AnimatedNumber targetNumber={totalTaskCompleted} />
+                    </div>
                 </div>
             </div>
 
             <div className="content-section">
                 <div className="text-section">
-                    <Doughnut data={dataDoughnut} />
+                    <Doughnut data={dataDoughnut} options={optionsDounought} />
                 </div>
                 <div className="chart-section">
                     <select onChange={handleRangeChange} value={selectedRange}>
@@ -320,35 +398,47 @@ function HomeScreen() {
             </div>
 
             <div className="list-section">
+                {/* Main List */}
                 <div className="main-list">
-                    <p>Main list of items</p>
+                    {/* Header Row */}
+                    <div className="header-row">
+                        <div className="header-item">Task</div>
+                        <div className="header-item">Assigned</div>
+                        <div className="header-item">Finished</div>
+                        <div className="header-item">Status</div>
+                    </div>
+
+                    {/* List Rows */}
                     <ul>
-                        {total.slice(0, 5).map((item: any, index: any) => {
-                            return (
-                                <li key={index} className="list-item">
-                                    <div className="item-title">{item.title}</div>
-                                    <div className="item-details">
-                                        <span>Assigned Date: {item.assignedDate}</span>
-                                        <span>Finished Date: {item.finishedDate}</span>
-                                        <span>Status: {item.status}</span>
-                                    </div>
-                                </li>
-                            );
-                        })}
+                        {total.slice(0, 5).map((item: any, index: any) => (
+                            <li key={index} className="list-item-home">
+                                <div className="item-title-home">{item.title}</div>
+                                <div className="item-assigned">{formatDate(item.assignedDate)}</div>
+                                <div className="item-finished">{formatDate(item.finishedDate)}</div>
+                                <div className="item-status">{item.status}</div>
+                            </li>
+                        ))}
                     </ul>
                 </div>
+
+                {/* Side List */}
                 <div className="side-list">
-                    <p>Smaller side list</p>
+                    <p>Team Score</p>
                     <ul>
                         {users.slice(0, 5).map((user, index) => (
                             <li key={index}>
-                                <p>{user.email}</p>
-                                <p>Completed Tasks: {user.tasks.filter((task: any) => task.status === 'completed').length}</p>
+                                <div className='user-score'>{user.email}</div>
+                                <div className="user-score">
+                                    Completed Tasks <span style={{ color: 'green', marginLeft: 20, fontSize: 22 }}>
+                                        {user.tasks.filter((task: any) => task.status === 'completed').length}
+                                    </span>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
+
         </div>
     );
 }
