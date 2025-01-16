@@ -1,0 +1,35 @@
+.settings-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.settings-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #436fce;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.info-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.info-list li {
+  margin: 5px 0;
+}
+
+.language-dropdown {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

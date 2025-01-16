@@ -1,0 +1,75 @@
+.settings-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width of the screen */
+}
+
+.settings-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #436fce;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #436fce;
+}
+
+.info-section {
+  margin-bottom: 20px;
+}
+
+.info-card {
+  background-color: rgba(193, 193, 193, 0.5);
+  padding: 20px;
+  border-radius: 35px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-list {
+  list-style-type: none;
+  padding: 0;
+  font-family: "Krona One";
+}
+
+.info-list li {
+  margin: 5px 0;
+}
+
+.info-list li span {
+  font-weight: normal;
+}
+
+.language-dropdown {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.language-dropdown:hover {
+  border-color: #436fce;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.language-dropdown:focus {
+  outline: none;
+  border-color: #436fce;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.username-email-role {
+  font-weight: bold;
+  font-family: "Krona One";
+}

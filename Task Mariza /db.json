@@ -1,0 +1,160 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "user@user.com",
+      "password": "1"
+    },
+    {
+      "email": "1user@user.com",
+      "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+      "id": "HaAvqQn",
+      "role": "admin",
+      "username": "admin"
+    },
+    {
+      "email": "normaluser@user.com",
+      "password": "$2a$10$B6WFSWyhef6m4jpuGKA0EeRfqnyP6JOY.i8pJ.kdR9XQDyEChaMTG",
+      "id": "IAQF8yg",
+      "role": "worker",
+      "username": "worker"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Task",
+      "description": "Task",
+      "deadline": "2025-01-23T00:00:00.000Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-15T22:03:28.246Z",
+      "status": "pending",
+      "finishedDate": null,
+      "userEmail": "1user@user.com",
+      "priority": "Important",
+      "comments": [
+        {
+          "text": "@admin si je",
+          "user": "1user@user.com",
+          "mentions": [
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            }
+          ],
+          "date": "2025-01-15T22:03:41.519Z"
+        },
+        {
+          "text": "@admin mire ti",
+          "user": "1user@user.com",
+          "mentions": [
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            },
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            }
+          ],
+          "date": "2025-01-15T22:03:51.704Z"
+        }
+      ],
+      "updatedAt": "2025-01-15T22:32:27.374Z"
+    },
+    {
+      "id": 2,
+      "title": "Task",
+      "description": "Task",
+      "deadline": "2025-01-23T00:00:00.000Z",
+      "assignedTo": "HaAvqQn",
+      "assignedDate": "2025-01-15T22:04:03.155Z",
+      "status": "pending",
+      "finishedDate": null,
+      "userEmail": "1user@user.com",
+      "priority": "Important",
+      "comments": [
+        {
+          "text": "@admin si je tii",
+          "user": "1user@user.com",
+          "mentions": [
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            },
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            },
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            }
+          ],
+          "date": "2025-01-15T22:04:20.978Z"
+        },
+        {
+          "text": "@worker o kingu",
+          "user": "1user@user.com",
+          "mentions": [
+            {
+              "email": "normaluser@user.com",
+              "password": "$2a$10$B6WFSWyhef6m4jpuGKA0EeRfqnyP6JOY.i8pJ.kdR9XQDyEChaMTG",
+              "id": "IAQF8yg",
+              "role": "worker",
+              "username": "worker"
+            }
+          ],
+          "date": "2025-01-15T22:13:52.574Z"
+        },
+        {
+          "text": "@worker \nwad",
+          "user": "1user@user.com",
+          "mentions": [
+            {
+              "email": "normaluser@user.com",
+              "password": "$2a$10$B6WFSWyhef6m4jpuGKA0EeRfqnyP6JOY.i8pJ.kdR9XQDyEChaMTG",
+              "id": "IAQF8yg",
+              "role": "worker",
+              "username": "worker"
+            },
+            {
+              "email": "1user@user.com",
+              "password": "$2a$10$EZGcSSOahMLiFhRUGfomO.BGCKqQ2NQMcNMNT.8380EmQpmPX.WO.",
+              "id": "HaAvqQn",
+              "role": "admin",
+              "username": "admin"
+            },
+            {
+              "email": "normaluser@user.com",
+              "password": "$2a$10$B6WFSWyhef6m4jpuGKA0EeRfqnyP6JOY.i8pJ.kdR9XQDyEChaMTG",
+              "id": "IAQF8yg",
+              "role": "worker",
+              "username": "worker"
+            }
+          ],
+          "date": "2025-01-15T22:32:21.290Z"
+        }
+      ],
+      "updatedAt": "2025-01-15T22:32:24.593Z"
+    }
+  ]
+}

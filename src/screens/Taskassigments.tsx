@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../actions/authActions';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../css/Task.css';
 import editIMG from '../images/image11.png';
 import deleteIMG from '../images/image12.png';
 import lupeIMG from '../images/image13.png';
+import { useTranslation } from 'react-i18next';
+
 
 
 
@@ -37,33 +39,11 @@ function TaskScreen() {
     const [activeIndex, setActiveIndex] = useState(-1);
     const [openAddTask, setOpenAddTask] = useState<Boolean>(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [newComment, setNewComment] = useState('');
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
+    const { t }: any = useTranslation();
 
-    const handleKeyDown = (e: any) => {
-        if (!mentionDropdownVisible) return;
-
-        switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault(); // Prevent cursor movement
-                setActiveIndex((prevIndex) => (prevIndex + 1) % filteredUsers.length);
-                break;
-            case 'ArrowUp':
-                e.preventDefault(); // Prevent cursor movement
-                setActiveIndex((prevIndex) => (prevIndex - 1 + filteredUsers.length) % filteredUsers.length);
-                break;
-            case 'Enter':
-                e.preventDefault(); // Prevent form submission if inside a form
-                if (activeIndex >= 0 && filteredUsers.length > 0) {
-                    handleMentionSelect(filteredUsers[activeIndex].username);
-                }
-                break;
-            case 'Escape':
-                setMentionDropdownVisible(false);
-                break;
-            default:
-                break;
-        }
-    };
 
     const [editedTask, setEditedTask] = useState({
         id: '',
@@ -78,6 +58,7 @@ function TaskScreen() {
         priority: '',
         comment: '',
         mentions: [],
+        comments: []
     });
 
     const handleTaskClick = (task: any) => {
@@ -94,7 +75,8 @@ function TaskScreen() {
             userEmail: task.userEmail,
             priority: task.priority,
             comment: task.comment,
-            mentions: task.mentions
+            mentions: task.mentions,
+            comments: task.comments || []
         });
         setIsPopupOpen(true);
     };
@@ -120,32 +102,86 @@ function TaskScreen() {
         }
     };
 
-    const handleMentionSelect = (username: string) => {
-        const comment = editedTask.comment || '';
-        const mentionTriggerIndex = comment.lastIndexOf('@');
-        const beforeMention = comment.slice(0, mentionTriggerIndex);
-        const afterMention = comment.slice(mentionTriggerIndex).replace(/@\w*/, `@${username} `);
-        setEditedTask(prev => ({
-            ...prev,
-            comment: `${beforeMention}${afterMention}`
-        }));
-        setMentionDropdownVisible(false);
+
+    const [mentions, setMentions] = useState<any>([]);
+    const [showMentions, setShowMentions] = useState(false);
+
+    const handleCommentChange = (e: any) => {
+        const value = e.target.value;
+        setNewComment(value);
+
+        const mentionTriggerIndex = value.lastIndexOf('@');
+        if (mentionTriggerIndex >= 0) {
+            const mentionText = value.slice(mentionTriggerIndex + 1).trim();
+            const matches = users.filter((user: any) => user?.username?.startsWith(mentionText));
+            setFilteredUsers(matches);
+            setShowMentions(matches.length > 0);
+        } else {
+            setShowMentions(false);
+        }
+    };
+
+    const handleMentionClick = (user: any) => {
+        const mentionText = `@${user.username} `;
+        const updatedComment = newComment.slice(0, newComment.lastIndexOf('@')) + mentionText;
+        setNewComment(updatedComment);
+        setMentions([...mentions, user]);
+        setShowMentions(false);
+        setHighlightedIndex(-1); // Reset highlighted index after selecting a mention
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (!showMentions) return;
+
+        if (e.key === 'ArrowDown') {
+            setHighlightedIndex((prev) => (prev + 1) % filteredUsers.length);
+        } else if (e.key === 'ArrowUp') {
+            setHighlightedIndex((prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length);
+        } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+            handleMentionClick(filteredUsers[highlightedIndex]);
+        }
     };
 
 
     const handleSaveClick = async (taskData: any) => {
         console.log('Saving task:', taskData);
 
+        // Initialize comments array if it is undefined or null
+        const updatedComments: any = editedTask.comments || [];
+
+        if (newComment.trim()) {
+            // Add the new comment to the task's comments array
+            updatedComments.push({
+                text: newComment,
+                user: taskData.userEmail,
+                mentions: mentions,
+                date: new Date().toISOString(),
+            });
+
+            // Update the task with the new comment
+            setEditedTask((prevState: any) => ({
+                ...prevState,
+                comments: updatedComments,
+            }));
+
+            // Clear the new comment input
+            setNewComment('');
+        }
+
         const updatedData = {
             ...taskData,
             updatedAt: new Date().toISOString(),
+            comments: updatedComments,  // Ensure comments are included in the updated task data
         };
 
-        console.log(updatedData);
+        console.log('si vjen kjo', updatedData);
 
         setIsPopupOpen(false);
         try {
-            const response = await axios.put(`http://localhost:5001/tasks/${updatedData.id}`, updatedData);
+            const response = await axios.put(
+                `http://localhost:5001/tasks/${updatedData.id}`,
+                updatedData
+            );
             console.log('Task updated:', response.data);
         } catch (error) {
             console.error('Failed to update task:', error);
@@ -157,6 +193,7 @@ function TaskScreen() {
             );
         });
     };
+
 
 
 
@@ -231,7 +268,7 @@ function TaskScreen() {
     const handleUserSelect = (user: any) => {
         setSelectedUser(user);
         console.log(user);
-        
+
         setDropdownVisible(false); // Hide dropdown after selecting a user
     };
 
@@ -284,13 +321,17 @@ function TaskScreen() {
         }
     };
 
+
+    const [image, setImage] = useState<any>('');
+
     const handleFileChange = (e: any) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                const base64Image: any = reader.result;
-                handleInputChange('image', base64Image);
+                const base64Image = reader.result;
+                // Update the state only if there's a new image
+                setImage(base64Image);
             };
             reader.readAsDataURL(file);
         }
@@ -298,14 +339,15 @@ function TaskScreen() {
 
     const handleDragEnd = (result: any) => {
         const { destination, source, draggableId } = result;
-    
+
         if (!destination) return; // Exit if dropped outside a droppable
         if (destination.droppableId === source.droppableId && destination.index === source.index) return; // Exit if dropped in the same place
-    
+
         const now = new Date().toISOString();  // Get the current date and time
-    
+
+        // Coerce types when comparing draggableId to task.id
         const updatedTasks = tasks.map((task: any) => {
-            if (task.id === draggableId) {
+            if (String(task.id) === String(draggableId)) {
                 return {
                     ...task,
                     status: destination.droppableId,
@@ -314,20 +356,26 @@ function TaskScreen() {
             }
             return task;
         });
-    
+
         setTasks(updatedTasks); // Update state with modified tasks
-    
+
+        // Use the updated draggableId comparison for finding the task
+        const foundTask = updatedTasks.find((task: any) => String(task.id) === String(draggableId)) || {};
+
         const newEditedTask = {
-            ...tasks.find((task: any) => task.id === draggableId),
+            ...foundTask,
             status: destination.droppableId,
-            finishedDate: destination.droppableId === 'Completed' ? now : tasks.find((task: any) => task.id === draggableId)?.finishedDate,
+            finishedDate: destination.droppableId === 'Completed' ? now : foundTask.finishedDate,
         };
-    
+
+        console.log('ca eshte kjo tjetra', newEditedTask);
+
         setEditedTask(newEditedTask);  // Update editedTask state
         handleSaveClick(newEditedTask);  // Pass newEditedTask directly to handleSaveClick
     };
-    
-    
+
+
+
 
 
 
@@ -350,37 +398,62 @@ function TaskScreen() {
 
 
     const renderTaskItem = (item: any) => (
-        <div className='conatiner-task'>
+        <div
+            onClick={() => navigate(`/details`, { state: { task: item } })}
+            className="container-task"
+        >
             <div className="item-title">#{item.id} - {item.title}</div>
 
+            <div className="assign-text">{t('assignedToLabel1')} {item.userEmail}</div>
 
-            <div className='assign-text'>Assigned to {item.userEmail}</div>
-
-            {/* <div className="item-details">
-                <span>Assigned Date: {item.assignedDate}</span>
-                <span>Finished Date: {item.finishedDate}</span>
-                <span>User Assigned: {item.userEmail}</span>
-                <span>Status: {item.status}</span>
-            </div> */}
-            {/* {item.image && (
-                <img src={item.image} alt="Task Image" style={{ width: '100px', height: '100px' }} />
-            )} */}
             <div>
                 {(userID === item.assignedTo || userRole === 'admin') && (
-                    <div className='assign-container'>
-                        <div className='assign-container'>
-                            <img src={editIMG} alt="edit icone" className="edit-icon" />
-                            <div className='edit-text' onClick={() => handleTaskClick(item)}>Edit</div>
+                    <div className="assign-container">
+                        <div className="assign-container">
+                            <img
+                                src={editIMG}
+                                alt="edit icon"
+                                className="edit-icon"
+                                onClick={(e) => {
+                                    e.stopPropagation();  // Prevent navigation
+                                    handleTaskClick(item);
+                                }}
+                            />
+                            <div
+                                className="edit-text"
+                                onClick={(e) => {
+                                    e.stopPropagation();  // Prevent navigation
+                                    handleTaskClick(item);
+                                }}
+                            >
+                                {t('editTaskTitle1')}
+                            </div>
                         </div>
-                        <div className='delete-container'>
-                            <img src={deleteIMG} alt="delete icone" className="delete-icon" />
-                            <div className='delete-text' onClick={() => handleDeleteTask(item.id)}>Delete</div>
+                        <div className="delete-container">
+                            <img
+                                src={deleteIMG}
+                                alt="delete icon"
+                                className="delete-icon"
+                                onClick={(e) => {
+                                    e.stopPropagation();  // Prevent navigation
+                                    handleDeleteTask(item.id);
+                                }}
+                            />
+                            <div
+                                className="delete-text"
+                                onClick={(e) => {
+                                    e.stopPropagation();  // Prevent navigation
+                                    handleDeleteTask(item.id);
+                                }}
+                            >
+                                {t('deleteTask')}
+                            </div>
                         </div>
                     </div>
                 )}
             </div>
+        </div>
 
-        </div >
     );
 
 
@@ -389,21 +462,22 @@ function TaskScreen() {
         <div className='all-div'>
             <div className='top-div'>
                 <div className='search'>
-                    <img src={lupeIMG} alt="Home Icon" className="link-icon" />
+                    <img src={lupeIMG} alt={t('homeIcon')} className="link-icon" />
                     <input value={searchQuery}
-                        onChange={handleSearchChange} className='search-input' type="text" placeholder="Search..." />
+                        onChange={handleSearchChange} className='search-input' type="text" placeholder={t('searchPlaceholder')} />
                 </div>
-
 
                 {userRole === 'admin' && (
                     <>
-                        <div className='add-button' onClick={handleButtonClick}>+ New Task</div>
+                        <div className='add-button' onClick={handleButtonClick}>
+                            {t('newTaskButton')}
+                        </div>
                         {dropdownVisible && (
                             <div className="dropdown">
                                 {loading ? (
-                                    <p>Loading users...</p>
+                                    <p>{t('loadingUsers')}</p>
                                 ) : error ? (
-                                    <p>{error}</p>
+                                    <p>{t('errorLoadingUsers', { error: error })}</p>
                                 ) : (
                                     <ul>
                                         {users.map((user: any) => (
@@ -420,87 +494,88 @@ function TaskScreen() {
             </div>
 
             {openAddTask && (
-                // <div className="task-form">
-                //     <p>A {selectedUser.email}</p>
-                //     <input
-                //         type="text"
-                //         placeholder="Task Title"
-                //         value={title}
-                //         onChange={(e) => setTitle(e.target.value)}
-                //     />
-                //     <textarea
-                //         placeholder="Task Description"
-                //         value={description}
-                //         onChange={(e) => setDescription(e.target.value)}
-                //     />
-                //     <input
-                //         type="date"
-                //         value={dueDate}
-                //         onChange={(e) => setDueDate(e.target.value)}
-                //     />
-
-                //     <label>
-                //         Priority:
-                //         <select
-                //             value={editedTask.priority}
-                //             onChange={(e) => setPriority(e.target.value)}
-                //         >
-                //             <option value="">Select priority</option>
-                //             <option value="Important">Important</option>
-                //             <option value="Medium">Medium</option>
-                //             <option value="Low">Low</option>
-                //         </select>
-                //     </label>
-                //     <button onClick={handleAddTask}>Done</button>
-
-                // </div>
-
                 <div className="popup">
                     <div className="popup-content">
-                        <h2>Pop-Up Title</h2>
-                        <p>This is a pop-up message.</p>
+                        <p>{t('popupMessage')}</p>
                         <div className="task-form">
-                            <p>{selectedUser?.email}</p>
-                            <ul>
-                                {users.map((user: any) => (
-                                    <li key={user.id} onClick={() => handleUserSelect(user)}>
-                                        {user.email}
-                                    </li>
-                                ))}
-                            </ul>
-                            <input
-                                type="text"
-                                placeholder="Task Title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
-                            <textarea
-                                placeholder="Task Description"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                            <input
-                                type="date"
-                                value={dueDate}
-                                onChange={(e) => setDueDate(e.target.value)}
-                            />
 
-                            <label>
-                                Priority:
-                                <select
-                                    value={editedTask.priority}
-                                    onChange={(e) => setPriority(e.target.value)}
-                                >
-                                    <option value="">Select priority</option>
-                                    <option value="Important">Important</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                </select>
-                            </label>
-                            <button onClick={handleAddTask}>Done</button>
+                            <div className="form-container">
+                                <div className="left-side">
+                                    <div className="input-group">
+                                        <label className="status-label">Title</label>
+                                        <input
+                                            type="text"
+                                            placeholder={t('taskTitlePlaceholder')}
+                                            value={title}
+                                            onChange={(e) => setTitle(e.target.value)}
+                                            className='input-create'
+                                        />
+                                    </div>
+
+                                    <div className="input-group">
+                                        <label className="status-label">Description</label>
+                                        <textarea
+                                            placeholder={t('taskDescriptionPlaceholder')}
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                            className='input-create'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="right-side">
+                                    <div className="input-group deadline-group">
+                                        <label className="status-label">Deadline</label>
+                                        <input
+                                            type="date"
+                                            value={dueDate}
+                                            onChange={(e) => setDueDate(e.target.value)}
+                                            className='input-create'
+                                        />
+                                    </div>
+
+                                    {/* User Dropdown */}
+
+                                    <div className="user-info">
+                                        <label className="status-label">Select User</label>
+                                        <select
+                                            className='input-create'
+                                            value={selectedUser?.id || ''}
+                                            onChange={(e) => handleUserSelect(users.find((user: any) => user.id === e.target.value))}
+                                        >
+                                            <option value="">{t('selectUser')}</option>
+                                            {users.map((user: any) => (
+                                                <option key={user.id} value={user.id}>
+                                                    {user.email}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    {/* Priority Dropdown */}
+                                    <div className="priority">
+                                        <label className="status-label" >{t('priorityLabel')}:</label>
+                                        <select
+                                            value={editedTask.priority}
+                                            onChange={(e) => setPriority(e.target.value)}
+                                            className='input-create'
+                                        >
+                                            <option value="">{t('selectPriority')}</option>
+                                            <option value="Important">{t('importantPriority')}</option>
+                                            <option value="Medium">{t('mediumPriority')}</option>
+                                            <option value="Low">{t('lowPriority')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
-                        <button onClick={() => { setOpenAddTask(false) }}>Close</button>
+
+                        <div className="popup-actions">
+                            <button onClick={handleAddTask} className="popup-button save-btn">{t('doneButton')}</button>
+                            <button onClick={() => { setOpenAddTask(false) }} className="popup-button cancel-btn">{t('closeButton')}</button>
+                        </div>
+
                     </div>
                 </div>
             )}
@@ -515,12 +590,12 @@ function TaskScreen() {
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
                                 >
-                                    <h2>{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
+                                    <h2>{status}</h2>
                                     <ul>
                                         {filteredTasks
                                             .filter((task) => task.status === status)
-                                            .map((item, index) => (
-                                                <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            .map((item: any, index) => (
+                                                <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
                                                     {(provided) => (
                                                         <li
                                                             ref={provided.innerRef}
@@ -545,68 +620,124 @@ function TaskScreen() {
             {isPopupOpen && (
                 <div className="popup">
                     <div className="popup-content">
-                        <h3>Edit Task</h3>
-                        <label>
-                            Status:
+                        <h3 className='text-header'>{t('editTaskTitle')}, #{editedTask.title}</h3>
+
+                        <label className="assigned-to-label">
+                            {t('assignedToLabel')}:
                             <select
-                                value={editedTask.status}
-                                onChange={(e) => handleInputChange('status', e.target.value)}
+                                value={editedTask.assignedTo}
+                                onChange={(e) => handleInputChange('assignedTo', e.target.value)}
+                                className="assigned-to-select"
                             >
-                                <option value="in-progress">In Progress</option>
-                                <option value="review">In Review</option>
-                                <option value="completed">Completed</option>
+                                <option value="">{t('selectUser')}</option>
+                                {users.map((user: any) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.email}
+                                    </option>
+                                ))}
                             </select>
                         </label>
-                        <label>
-                            Comment:
-                            <textarea
-                                value={editedTask.comment || ''}
-                                onChange={(e) => handleInputChange('comment', e.target.value)}
-                                onKeyDown={handleKeyDown}
-                            />
-                        </label>
-                        {mentionDropdownVisible && (
-                            <ul className="mention-dropdown">
-                                {filteredUsers.map((user: any, index: any) => (
-                                    <li
-                                        key={user.id}
-                                        onClick={() => handleMentionSelect(user.username)}
-                                        className={`mention-item ${index === activeIndex ? 'active' : ''}`}
-                                    >
-                                        {user.username}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
 
 
-                        <label>
-                            Upload Image:
-                            <input type="file" accept="image/*" onChange={handleFileChange} />
-                        </label>
+
+                        <div className="form-container">
+                            <div className="form-left">
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label className="status-label" htmlFor="status-select">{t('statusLabel')}</label>
+                                        <select
+                                            id="status-select"
+                                            value={editedTask.status}
+                                            onChange={(e) => handleInputChange('status', e.target.value)}
+                                            className="form-control"
+                                        >
+                                            <option value="in-progress">{t('inProgress')}</option>
+                                            <option value="review">{t('review')}</option>
+                                            <option value="completed">{t('completed')}</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="status-label" htmlFor="priority-select">{t('priorityLabel')}</label>
+                                        <select
+                                            id="priority-select"
+                                            value={editedTask.priority}
+                                            onChange={(e) => handleInputChange('priority', e.target.value)}
+                                            className="form-control"
+                                        >
+                                            <option value="">{t('selectPriority')}</option>
+                                            <option value="Important">{t('importantPriority')}</option>
+                                            <option value="Medium">{t('mediumPriority')}</option>
+                                            <option value="Low">{t('lowPriority')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="form-group full-width">
+                                    <label className="status-label" htmlFor="comment-textarea">{t('addCommentLabel')}</label>
+                                    <textarea
+                                        id="comment-textarea"
+                                        value={newComment}
+                                        onChange={handleCommentChange}
+                                        onKeyDown={handleKeyDown}
+                                        placeholder={t('enterNewComment')}
+                                        className="form-control"
+                                    />
+                                    {showMentions && (
+                                        <ul className="mention-dropdown">
+                                            {filteredUsers.map((user: any, index: number) => (
+                                                <li
+                                                    key={user.id}
+                                                    onClick={() => handleMentionClick(user)}
+                                                    className={index === highlightedIndex ? 'highlighted' : ''}
+                                                >
+                                                    {user.username}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="form-right">
+                                <div className="form-group">
+                                    <label className="status-label" htmlFor="image-upload">{t('uploadImageLabel')}</label>
+                                    <input
+                                        type="file"
+                                        id="image-upload"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="file-input"
+                                    />
+
+                                    {image && <img src={image} alt="Uploaded preview" className="absolute-image" />}
+
+                                </div>
+                            </div>
+                        </div>
+
+
 
 
                         {/* Only allow full editing if the user is an admin */}
                         {userRole === 'admin' && (
                             <>
-                                <label>
-                                    Title:
+                                {/* <label>
+                                    {t('titleLabel')}:
                                     <input
                                         type="text"
                                         value={editedTask.title}
                                         onChange={(e) => handleInputChange('title', e.target.value)}
                                     />
-                                </label>
-                                <label>
-                                    Description:
+                                </label> */}
+                                {/* <label>
+                                    {t('descriptionLabel')}:
                                     <textarea
                                         value={editedTask.description}
                                         onChange={(e) => handleInputChange('description', e.target.value)}
                                     />
-                                </label>
-                                <label>
-                                    Deadline:
+                                </label> */}
+                                <label className="assigned-to-label">
+                                    {t('deadlineLabel')}:
                                     <input
+                                        className="datetime-input"
                                         type="datetime-local"
                                         value={editedTask.deadline.replace('Z', '')}
                                         onChange={(e) => {
@@ -615,44 +746,21 @@ function TaskScreen() {
                                         }}
                                     />
                                 </label>
-                                <label>
-                                    Assigned To:
-                                    <select
-                                        value={editedTask.assignedTo}
-                                        onChange={(e) => handleInputChange('assignedTo', e.target.value)}
-                                    >
-                                        <option value="">Select a user</option>
-                                        {users.map((user: any) => (
-                                            <option key={user.id} value={user.id}>
-                                                {user.email}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </label>
-                                <label>
-                                    Priority:
-                                    <select
-                                        value={editedTask.priority}
-                                        onChange={(e) => handleInputChange('priority', e.target.value)}
-                                    >
-                                        <option value="">Select priority</option>
-                                        <option value="Important">Important</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Low">Low</option>
-                                    </select>
-                                </label>
                             </>
                         )}
                         <div className="popup-actions">
-                            <button onClick={() => { handleSaveClick(editedTask) }}>Save</button>
-                            <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
+                            <button onClick={() => { handleSaveClick(editedTask) }} className="popup-button save-btn">{t('saveButton')}</button>
+                            <button onClick={() => setIsPopupOpen(false)} className="popup-button cancel-btn">{t('cancelButton')}</button>
                         </div>
+
+
+
                     </div>
                 </div>
-            )}
+            )
+            }
+        </div >
 
-
-        </div>
     );
 }
 

@@ -1,10 +1,9 @@
-/* General layout for sidebar and content */
 .sidebar-layout {
   display: flex;
   height: 100%;
+  position: relative;
 }
 
-/* Sidebar styles */
 .sidebar {
   width: 350px;
   background-color: #436fce;
@@ -14,9 +13,15 @@
   display: flex;
   flex-direction: column;
   border-top-right-radius: 35px;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+  z-index: 1000;
 }
 
-/* Welcome section */
+.sidebar.open {
+  transform: translateX(0);
+}
+
 .sidebar .welcome1 {
   margin-bottom: 2rem;
 }
@@ -26,14 +31,9 @@
   font-size: 1.1rem;
   font-family: "Krona One";
   font-weight: 400;
+  color: white;
 }
 
-.sidebar .welcome1 p {
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-
-/* Navigation menu */
 .sidebar nav ul {
   list-style: none;
   padding: 0;
@@ -41,10 +41,9 @@
 }
 
 .link-icon {
-  width: 20px; /* Adjust icon size */
+  width: 20px;
   height: 20px;
-  margin-right: 10px; /* Add spacing between icon and text */
-  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .sidebar nav ul li {
@@ -56,9 +55,9 @@
   text-decoration: none;
   color: #ecf0f1;
   font-size: 1rem;
-  padding: 0.5rem; /* Adjust padding for better spacing */
-  display: flex; /* Use flex to align icon and text properly */
-  align-items: center; /* Vertically align text with the icon */
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
   border-radius: 4px;
   transition: background-color 0.3s;
   margin-bottom: 30px;
@@ -69,38 +68,76 @@
 }
 
 .sign-out-button {
-  margin-top: auto; /* Ensure it stays at the bottom */
-  color: red; /* Red text color */
+  margin-top: auto;
+  color: red;
   padding: 10px 20px;
   font-size: 1rem;
-  border: none; /* No border */
+  border: none;
   border-radius: 4px;
   cursor: pointer;
-  background: transparent; /* No background */
-  transition: color 0.3s; /* Transition for text color change */
+  background: transparent;
+  transition: color 0.3s;
 }
 
 .sign-out-button:hover {
-  color: darkred; /* Darker red color on hover */
+  color: darkred;
 }
 
-/* Content area */
 .content {
   flex-grow: 1;
   padding: 2rem;
   background-color: #ecf0f1;
+  transition: filter 0.3s ease-in-out;
 }
 
-/* Mobile responsiveness */
+.content.blurred {
+  filter: blur(5px);
+}
+
+.hamburger-button {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #436fce;
+  cursor: pointer;
+  z-index: 1500;
+  transition: color 0.3s ease-in-out;
+}
+
+.hamburger-button.active {
+  color: white;
+}
+
 @media (max-width: 768px) {
   .sidebar {
-    width: 200px;
+    width: 250px;
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .content.blurred {
+    filter: blur(5px);
   }
 }
 
 @media (max-width: 480px) {
   .sidebar {
-    display: none;
+    width: 200px;
   }
   .content {
     padding: 1rem;

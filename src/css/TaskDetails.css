@@ -1,0 +1,99 @@
+.task-detail-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.task-title {
+  font-size: 2em;
+  font-weight: bold;
+  color: #436fce;
+  margin-bottom: 20px;
+}
+
+.task-description {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.task-info {
+  margin-bottom: 30px;
+  background-color: rgba(193, 193, 193, 0.5);
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.task-item {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: "Krona One";
+}
+
+.task-image {
+  width: 50px; /* Adjust image width */
+  height: 50px; /* Adjust image height */
+  margin-left: 10px; /* Space between the text and the image */
+  object-fit: cover; /* Ensure the image fits properly */
+}
+
+.task-item strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.pending {
+  color: orange;
+}
+
+.status.completed {
+  color: green;
+}
+
+.priority {
+  font-weight: bold;
+}
+
+.priority.important {
+  color: red;
+}
+
+.priority.medium {
+  color: orange;
+}
+
+.comments {
+  margin-top: 30px;
+}
+
+.comments h3 {
+  font-size: 1.3em;
+  color: #333;
+}
+
+.comment {
+  background-color: rgba(193, 193, 193, 0.5);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.details-p {
+  font-size: 18px;
+}
+.details-p2 {
+  font-size: 16px;
+}
+
+.comment-details {
+  font-family: "Krona One";
+}
